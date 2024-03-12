@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
         if (!user) {
             // Optionally, add a flash message or similar to notify the user
             console.log("User not found");
-            return res.redirect('/');
+            return res.redirect('/auth/login');
         }
 
         next();
