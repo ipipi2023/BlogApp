@@ -46,10 +46,10 @@ const app = express();
 
 //to hide links if user is logged
 global.loggedIn = null;
-console.log(loggedIn);
+//console.log(loggedIn);
 app.use("*", (req,res,next)=> {
     loggedIn = req.session.userId;
-    console.log("loggedIn", loggedIn);
+    //console.log("loggedIn", loggedIn);
     next();
 })
 
