@@ -3,13 +3,37 @@ const express = require('express');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const fileUpload = require('express-fileupload'); //handle fileupload
+const fileUpload = require('express-fileupload');
 const expressSession = require('express-session');
-const flash = require('connect-flash'); //needed for session lifecycle
+const flash = require('connect-flash');
 
+// Initialize express app
+const app = express();
 
-//connecting to database 
+// Connect to the database
 mongoose.connect('mongodb://localhost/my_database');
+
+// Middleware setup
+// Note: Session middleware is now placed before flash and custom middleware that depend on it
+app.use(expressSession({
+    secret: 'Hello World',
+    resave: false,
+    saveUninitialized: false,
+}));
+
+app.use(flash());
+app.use(express.static('public')); // Serve static files
+app.use(fileUpload());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs'); // Set the view engine to ejs
+
+// Global variable for user login status
+global.loggedIn = null;
+app.use("*", (req, res, next) => {
+    loggedIn = req.session.userId;
+    next();
+});
 
 // Import controllers
 const homePageController = require('./controllers/homePage');
@@ -24,56 +48,29 @@ const loginController = require('./controllers/login');
 const loginUserController = require('./controllers/loginUser');
 const logoutController = require('./controllers/logout');
 
-//import middlwares 
+// Import middlewares
 const postValidationMiddleware = require('./middlewares/postValidation');
 const authMiddleWare = require('./middlewares/authMiddleware');
 const redirectAuthenticatedMiddleware = require('./middlewares/redirectIfAuthenticated');
-// Initialize express app
-const app = express();
-    
-// Middleware setup
-    app.use(flash());
-    app.use(express.static('public'));// get static files 
-    app.use(fileUpload())//fileupload- image in this case
-    app.set('view engine', 'ejs'); // ejs
-    app.use(bodyParser.json()); //parse incomming request bodies in JSON formate and make it available in req.body of the route handler
-    app.use(bodyParser.urlencoded({extended:true})); //parse incomming request bodies encoded in URL-encoded formate and made available in req.body of the route handler
-    app.use('/posts/store', postValidationMiddleware); //Validate post from user 
-    app.use(expressSession({
-        secret: 'Hello World',
-        resave: false, // Don't save session if unmodified
-        saveUninitialized: false, // Don't create session until something stored
-    }));
 
-//to hide links if user is logged
-global.loggedIn = null;
-//console.log(loggedIn);
-app.use("*", (req,res,next)=> {
-    loggedIn = req.session.userId;
-    //console.log("loggedIn", loggedIn);
-    next();
-})
+// Middleware for validating posts, placed right before the route it applies to
+app.use('/posts/store', postValidationMiddleware);
 
 // Routes
-//Get
-app.get('/', homePageController); //Home
-app.get('/about', aboutPageController) // get about page
-app.get('/contact', contactPageController); // get contacts
-app.get('/post/:id', getPostController); //open blog page
-app.get('/posts/new',authMiddleWare, newPostController); //authenticate user then get the users the new blogpage
-app.get('/auth/register', redirectAuthenticatedMiddleware, newUserController); //get the register page for new users to register
-app.get('/auth/login', redirectAuthenticatedMiddleware ,loginController) //get login page
-app.get('/auth/logout', logoutController); 
-
-//getting list of blogposts
-//POST
-//take in sumitted post by users and store in datebase
+app.get('/', homePageController);
+app.get('/about', aboutPageController);
+app.get('/contact', contactPageController);
+app.get('/post/:id', getPostController);
+app.get('/posts/new', authMiddleWare, newPostController);
+app.get('/auth/register', redirectAuthenticatedMiddleware, newUserController);
+app.get('/auth/login', redirectAuthenticatedMiddleware, loginController);
+app.get('/auth/logout', logoutController);
 app.post('/posts/store', authMiddleWare, storePostController);
-app.post('/users/register', redirectAuthenticatedMiddleware ,storeUserController);
-app.post('/users/login', redirectAuthenticatedMiddleware ,loginUserController);
+app.post('/users/register', redirectAuthenticatedMiddleware, storeUserController);
+app.post('/users/login', redirectAuthenticatedMiddleware, loginUserController);
 
-app.use((req,res) => res.render('notfound')) //middleware like route that displays page not found
-
+// Middleware for handling 404 Not Found
+app.use((req, res) => res.render('notfound'));
 
 // Start server
 const PORT = process.env.PORT || 4000;

@@ -1,11 +1,16 @@
-//Login User Controller to handle post request
-
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
 module.exports = async (req, res) => {
-    console.log(req.body);
     const { username, password } = req.body;
+
+    // Check if either username or password is empty
+    if (!username || !password) {
+        // Optionally, you could use req.flash to send a message back to the user
+        // indicating that both fields are required.
+        req.flash('loginError', 'Username and password are required.');
+        return res.redirect('/auth/login');
+    }
 
     try {
         const user = await User.findOne({ username: username }).exec();
@@ -20,13 +25,8 @@ module.exports = async (req, res) => {
         } else {
             res.redirect('/auth/login');
         }
-    } catch (error) {
-        // Handle the error appropriately
+    }  catch (error) {
         console.error(error);
-        // Redirect or send an error message depending on your error handling strategy
         res.redirect('/auth/login');
     }
-}
-
-
-
+};

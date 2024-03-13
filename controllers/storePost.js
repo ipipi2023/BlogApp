@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
             return res.status(400).send('Unsupported file type.');
         }
 
-        const maxSize = 5 * 1024 * 1024; // 5 MB
+        const maxSize = 20 * 1024 * 1024; // 5 MB
         if (image.size > maxSize) {
             return res.status(400).send('File size exceeds limit.');
         }
@@ -29,11 +29,12 @@ module.exports = async (req, res) => {
         // Use async/await for file upload
         await image.mv(uploadPath);
         imageUrl = '/assets/img/' + image.name;
-        console.log(imageUrl);
+        //console.log(imageUrl);
         // Create a new blog post in the database
         await BlogPost.create({
             ...req.body,
-            image: imageUrl //create image path in BlogPost Model 
+            image: imageUrl, //create image path in BlogPost Model 
+            userid: req.session.userId
         });
 
         // Redirect to home page after successful upload and database operation

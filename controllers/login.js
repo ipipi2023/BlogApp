@@ -1,5 +1,10 @@
 //login user contoller
 
 module.exports = (req,res) => {
-    res.render('login');
+   // console.log(req.flash('loginError'));
+    //console.log(req.flash('validationErrors'))
+    res.render('login', {
+        errors: req.flash('loginError'),
+        
+    });
 }

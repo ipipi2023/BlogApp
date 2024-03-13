@@ -10,7 +10,9 @@ module.exports = (req, res) => {
             res.redirect('/auth/login');
         }*/
 
-        res.render('create')
+        res.render('create', {
+            errors: req.flash('postValidation')
+        })
     } catch (error) {
         // Handle any errors that occur during the try block execution
         console.error('Error handling request: ', error);

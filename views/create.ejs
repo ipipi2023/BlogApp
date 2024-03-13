@@ -25,6 +25,16 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <p></p>
                         <div class="my-5">
+                            <% if (errors && errors.length > 0) { %>
+                                <div class="alert alert-danger" role="alert">
+                                    <% errors.forEach(error => { %>
+                                        <p><%= error %></p>
+                                    <% }); %>
+                                </div>
+                            <% } %>
+                            
+                        
+                            
                             <!-- * * * * * * * * * * * * * * *-->
                             <!-- * * SB Forms Contact Form * *-->
                             <!-- * * * * * * * * * * * * * * *-->
@@ -34,12 +44,12 @@
                             <!-- to get an API token!-->
                             <form id="uploadform" action="/posts/store" method="post" enctype="multipart/form-data">
                                 <div class="form-floating">
-                                    <input class="form-control" id="title" type="text" placeholder="Title" name="title" />
+                                    <input class="form-control" id="title" type="text" placeholder="Title" name="title" %>" />
                                     <label for="name">Title</label>
                                 </div>
                                
                                 <div class="form-floating">
-                                    <textarea class="form-control" id="body" rows="5" name="body"></textarea>
+                                    <textarea class="form-control" id="body" rows="5" name="body"  %>"></textarea>
                                     <label for="message">Description</label>
                                 </div>
                                 <br />
