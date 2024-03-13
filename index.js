@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload'); //handle fileupload
 const expressSession = require('express-session');
+const flash = require('connect-flash'); //needed for session lifecycle
 
 
 //connecting to database 
@@ -31,7 +32,7 @@ const redirectAuthenticatedMiddleware = require('./middlewares/redirectIfAuthent
 const app = express();
     
 // Middleware setup
-
+    app.use(flash());
     app.use(express.static('public'));// get static files 
     app.use(fileUpload())//fileupload- image in this case
     app.set('view engine', 'ejs'); // ejs

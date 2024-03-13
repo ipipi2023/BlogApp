@@ -9,12 +9,12 @@ const bcrypt = require('bcrypt');
 const UserSchema = new Schema({
   username: {
     type: String,
-    required: true, // Indicates the username must be provided
+    required: [true, 'Please provide username'], // Indicates the username must be provided
     unique: true //unique
   },
   password: {
     type: String,
-    required: true, // Indicates the password must be provided
+    required: [true, 'Please provide password'] // Indicates the password must be provided
   }
 });
 

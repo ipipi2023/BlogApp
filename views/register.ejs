@@ -42,12 +42,12 @@
                             <!-- to get an API token!-->
                             <form id="uploadform" action="/users/register" method="post" enctype="multipart/form-data">
                                 <div class="form-floating">
-                                    <input class="form-control" id="username" type="text" placeholder="User Name" name="username" />
+                                    <input class="form-control" id="username" type="text" placeholder="User Name" name="username" value="<%= username %>" />
                                     <label for="name">User Name</label>
                                 </div>
                                
                                 <div class="form-floating">
-                                    <input class="form-control" id="password" type="password" placeholder="Password" name="password" />
+                                    <input class="form-control" id="password" type="password" placeholder="Password" name="password" value="<%= password %>"/>
                                     <label for="name">Password</label>
                                 </div>
                                 <br />
