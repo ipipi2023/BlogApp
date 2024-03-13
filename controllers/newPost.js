@@ -11,7 +11,8 @@ module.exports = (req, res) => {
         }*/
 
         res.render('create', {
-            errors: req.flash('postValidation')
+            errors: req.flash('postValidation'),
+            createPost: true,
         })
     } catch (error) {
         // Handle any errors that occur during the try block execution
