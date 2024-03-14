@@ -47,7 +47,7 @@ const storeUserController = require('./controllers/storeUser');
 const loginController = require('./controllers/login');
 const loginUserController = require('./controllers/loginUser');
 const logoutController = require('./controllers/logout');
-
+const { submitContactForm } = require('./controllers/submitContactForm'); //
 // Import middlewares
 const postValidationMiddleware = require('./middlewares/postValidation');
 const authMiddleWare = require('./middlewares/authMiddleware');
@@ -68,6 +68,7 @@ app.get('/auth/logout', logoutController);
 app.post('/posts/store', authMiddleWare, storePostController);
 app.post('/users/register', redirectAuthenticatedMiddleware, storeUserController);
 app.post('/users/login', redirectAuthenticatedMiddleware, loginUserController);
+app.post('/submit-contact-form', submitContactForm);
 
 // Middleware for handling 404 Not Found
 app.use((req, res) => res.render('notfound'));
