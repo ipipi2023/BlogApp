@@ -11,7 +11,7 @@ const flash = require('connect-flash');
 const app = express();
 
 // Connect to the database
-mongoose.connect('mongodb://localhost/my_database');
+mongoose.connect('mongodb+srv://ipipi2022:HelloWorld-10@cluster0.tqdgv4s.mongodb.net/BloggingApp');
 
 // Middleware setup
 // Note: Session middleware is now placed before flash and custom middleware that depend on it
@@ -73,7 +73,13 @@ app.post('/users/login', redirectAuthenticatedMiddleware, loginUserController);
 app.use((req, res) => res.render('notfound'));
 
 // Start server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-});
+
+let port = process.env.PORT;
+if(port == null || port == "") {
+    port = 4000;
+}
+
+app.listen(port, () => {
+    console.log('App listening...')
+})
+
