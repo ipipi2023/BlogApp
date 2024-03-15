@@ -11,7 +11,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
  .yellow-text {
-  color: rgb(255, 145, 0);
+  color: #00ab5b;
  }
 :root {
   --bs-blue: #0d6efd;
