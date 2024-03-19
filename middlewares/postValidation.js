@@ -2,7 +2,7 @@
 
 module.exports = (req, res, next) => {
     let errors = [];
-    if (!req.files) errors.push("File is missing.");
+    //if (!req.files) errors.push("File is missing.");
     if (!req.body.title || !req.body.title.trim()) errors.push("Title is missing.");
     if (!req.body.body || !req.body.body.trim()) errors.push("Body content is missing.");
     

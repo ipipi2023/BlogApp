@@ -20,6 +20,7 @@
                                 <a href="#!"><%= blogpost.userid.username %></a>
                                 on <%= blogpost.datePosted.toDateString() %>
                             </span>
+                            <% if (blogpost.image) { %>
                             <!-- Image view and download link -->
                             <a href="<%= blogpost.image %>" target="_blank" title="Click to view full image" class="yellow-text">
                                 <i class="bi bi-eye-fill"></i> View Full Image
@@ -27,6 +28,7 @@
                             <a href="<%= blogpost.image %>" download="<%= blogpost.title %>-image" title="Download Image" class="yellow-text">
                                 <i class="bi bi-download"></i> Download Image
                             </a>
+                            <% } %>
                             
                         </div>
                     </div>
